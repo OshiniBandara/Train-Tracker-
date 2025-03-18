@@ -63,7 +63,8 @@ export class HomeComponent implements OnInit{
     .subscribe({
       next:(res)=>{
         console.log(res);
-        this.dataSource = new MatTableDataSource(res); // Initialize dataSource
+        const trainRecords = Object.values(res.data);
+        this.dataSource = new MatTableDataSource(trainRecords); // Initialize dataSource
         this.dataSource.paginator = this.paginator; // Set paginator
         this.dataSource.sort = this.sort; // Set sort
       },
@@ -81,7 +82,7 @@ export class HomeComponent implements OnInit{
     })
   }
 
-  deleteRecord(id : number ){
+  deleteRecord(id : string ){
     this.api.deleteTrainRecord(id)
     .subscribe({
       next:(res)=>{
