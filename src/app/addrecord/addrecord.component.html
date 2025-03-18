@@ -4,10 +4,10 @@
     <!-- Date Field -->
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Date</mat-label>
-      <input matInput [matDatepicker]="picker" formControlName="date" required />
+      <input matInput [matDatepicker]="picker" formControlName="Date" required />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
-      <mat-error *ngIf="form.get('date')?.hasError('required')">
+      <mat-error *ngIf="form.get('Date')?.hasError('required')">
         Date is required.
       </mat-error>
     </mat-form-field>
@@ -15,8 +15,8 @@
     <!-- Train Name Field -->
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Train Name</mat-label>
-      <input matInput formControlName="trainName" required />
-      <mat-error *ngIf="form.get('trainName')?.hasError('required')">
+      <input matInput formControlName="TrainName" required />
+      <mat-error *ngIf="form.get('TrainName')?.hasError('required')">
         Train Name is required.
       </mat-error>
     </mat-form-field>
@@ -24,8 +24,8 @@
     <!-- From Destination Field -->
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>From Destination</mat-label>
-      <input matInput formControlName="fromDestination" required />
-      <mat-error *ngIf="form.get('fromDestination')?.hasError('required')">
+      <input matInput formControlName="FromDestination" required />
+      <mat-error *ngIf="form.get('FromDestination')?.hasError('required')">
         From Destination is required.
       </mat-error>
     </mat-form-field>
@@ -33,8 +33,8 @@
     <!-- To Destination Field -->
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>To Destination</mat-label>
-      <input matInput formControlName="toDestination" required />
-      <mat-error *ngIf="form.get('toDestination')?.hasError('required')">
+      <input matInput formControlName="ToDestination" required />
+      <mat-error *ngIf="form.get('ToDestination')?.hasError('required')">
         To Destination is required.
       </mat-error>
     </mat-form-field>
@@ -42,8 +42,8 @@
     <!-- Scheduled Time Field -->
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Scheduled Time</mat-label>
-      <input matInput type="time" formControlName="scheduledTime" required />
-      <mat-error *ngIf="form.get('scheduledTime')?.hasError('required')">
+      <input matInput type="time" formControlName="ScheduledTime" required />
+      <mat-error *ngIf="form.get('ScheduledTime')?.hasError('required')">
         Scheduled Time is required.
       </mat-error>
     </mat-form-field>
@@ -51,8 +51,8 @@
     <!-- Delay Time Field -->
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Delay Time</mat-label>
-      <input matInput type="time" formControlName="delayTime" required />
-      <mat-error *ngIf="form.get('delayTime')?.hasError('required')">
+      <input matInput type="time" formControlName="DelayTime" required />
+      <mat-error *ngIf="form.get('DelayTime')?.hasError('required')">
         Delay Time is required.
       </mat-error>
     </mat-form-field>
