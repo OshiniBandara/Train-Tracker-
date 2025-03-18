@@ -1,0 +1,64 @@
+<h1 mat-dialog-title>Add Train Record</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <!-- Date Field -->
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="date" required />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="form.get('date')?.hasError('required')">
+        Date is required.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Train Name Field -->
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Train Name</mat-label>
+      <input matInput formControlName="trainName" required />
+      <mat-error *ngIf="form.get('trainName')?.hasError('required')">
+        Train Name is required.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- From Destination Field -->
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>From Destination</mat-label>
+      <input matInput formControlName="fromDestination" required />
+      <mat-error *ngIf="form.get('fromDestination')?.hasError('required')">
+        From Destination is required.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- To Destination Field -->
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>To Destination</mat-label>
+      <input matInput formControlName="toDestination" required />
+      <mat-error *ngIf="form.get('toDestination')?.hasError('required')">
+        To Destination is required.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Scheduled Time Field -->
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Scheduled Time</mat-label>
+      <input matInput type="time" formControlName="scheduledTime" required />
+      <mat-error *ngIf="form.get('scheduledTime')?.hasError('required')">
+        Scheduled Time is required.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Delay Time Field -->
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Delay Time</mat-label>
+      <input matInput type="time" formControlName="delayTime" required />
+      <mat-error *ngIf="form.get('delayTime')?.hasError('required')">
+        Delay Time is required.
+      </mat-error>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-button color="primary" (click)="onSubmit()" [disabled]="form.invalid">{{actionBtn}}</button>
+</div>

@@ -1,0 +1,55 @@
+<mat-toolbar>
+  <!-- Train Icon (Home) -->
+  <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" routerLink="/">
+    <mat-icon>train</mat-icon>
+  </button>
+
+  <!-- App Title -->
+  <span class="app-title">Train Tracker</span>
+
+  <!-- Spacer -->
+  <span class="example-spacer"></span>
+
+  <!-- Home Button -->
+  <button mat-button class="text-button" routerLink="/">
+    Home
+  </button>
+
+  <!-- Delay Report Button -->
+  <button mat-button class="text-button" routerLink="/delayreport">
+    Delay Report
+  </button>
+
+  <!-- Train Schedule Button -->
+  <button mat-button class="text-button" routerLink="/trainschedule">
+    Train Schedule
+  </button>
+
+  <!-- About Button -->
+  <button mat-button class="text-button" routerLink="/about">
+    About
+  </button>
+
+  <!-- Contact Button -->
+  <button mat-button class="text-button" routerLink="/contact">
+    Help
+  </button>
+
+  <!-- Spacer between Contact and Signup -->
+  <span class="button-spacer"></span>
+
+  <!-- Signup Button -->
+  <button mat-button class="text-button" routerLink="/signup">
+    Signup
+  </button>
+
+  <!-- Login Button -->
+  <button mat-raised-button color="primary" class="login-button" routerLink="/login">
+    Login
+  </button>
+</mat-toolbar>
+
+
+
+<!-- Router Outlet -->
+<router-outlet></router-outlet>

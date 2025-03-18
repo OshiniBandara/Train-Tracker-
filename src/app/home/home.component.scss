@@ -1,0 +1,58 @@
+/* Spacer between Contact and Signup buttons */
+.button-spacer {
+    width: 16px;
+  }
+  
+  /* Text buttons (Home, Delay Report, etc.) */
+  .text-button {
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin: 0 8px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .text-button:hover {
+    background-color: rgba(78, 38, 38, 0.1); /* Light hover effect */
+  }
+
+  .container {
+    padding: 16px;
+  }
+  
+  .filter-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  
+  .filter-input {
+    flex: 1;
+  }
+
+  table {
+    width: 100%;
+  }
+  
+  .mat-mdc-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+  
+  .add-record-button {
+    background-color: #3f51b5; /* Primary color */
+    color: white; /* Text color */
+    border: none; /* Remove border */
+    padding: 8px 16px; /* Padding */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 14px; /* Font size */
+    transition: background-color 0.3s ease; /* Smooth transition */
+  
+    &:hover {
+      background-color: #303f9f; /* Darker shade on hover */
+    }
+  }
+  

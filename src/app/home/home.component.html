@@ -1,0 +1,71 @@
+<div class="container">
+  <div style="margin-top: 10px">
+    <!-- Filter and Add Record Button Container -->
+    <div class="filter-container">
+      <!-- Filter Input (takes remaining space) -->
+      <mat-form-field appearance="outline" class="filter-input">
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Filter" />
+      </mat-form-field>
+
+      <!-- Add Record Button -->
+      <button mat-raised-button color="primary" (click)="openDialog()" class="add-record-button">
+        Add Record
+      </button>
+    </div>
+
+    <!-- Table -->
+    <table mat-table [dataSource]="dataSource" matSort>
+      <!-- Date Column -->
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+        <td mat-cell *matCellDef="let element">{{ element.date | date}}</td>
+      </ng-container>
+
+      <!-- Train Name Column -->
+      <ng-container matColumnDef="trainName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Train Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.trainName }}</td>
+      </ng-container>
+
+      <!-- From Destination Column -->
+      <ng-container matColumnDef="fromDestination">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>From Destination</th>
+        <td mat-cell *matCellDef="let element">{{ element.fromDestination }}</td>
+      </ng-container>
+
+      <!-- To Destination Column -->
+      <ng-container matColumnDef="toDestination">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>To Destination</th>
+        <td mat-cell *matCellDef="let element">{{ element.toDestination }}</td>
+      </ng-container>
+
+      <!-- Scheduled Time Column -->
+      <ng-container matColumnDef="scheduledTime">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Scheduled Time</th>
+        <td mat-cell *matCellDef="let element">{{ element.scheduledTime }}</td>
+      </ng-container>
+
+      <!-- Delay Time Column -->
+      <ng-container matColumnDef="delayTime">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Delay Time</th>
+        <td mat-cell *matCellDef="let element">{{ element.delayTime }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button (click)="editRecord(element)"  color="primary"><mat-icon>edit</mat-icon></button>
+          <button mat-icon-button (click)="deleteRecord(element.id)" color="warn"><mat-icon>delete</mat-icon></button>
+        </td>
+      </ng-container>
+
+      <!-- Header and Row Definitions -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <!-- Paginator -->
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>

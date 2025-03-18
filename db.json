@@ -1,0 +1,22 @@
+{
+  "trains": [
+    {
+      "id": "ca2e",
+      "date": "2025-03-07T13:00:00.000Z",
+      "trainName": "YallDevi",
+      "fromDestination": "Colombo",
+      "toDestination": "Jaffna",
+      "scheduledTime": "10:30",
+      "delayTime": "11:20"
+    },
+    {
+      "id": "d131",
+      "date": "2025-03-07T13:00:00.000Z",
+      "trainName": "RuhunuKumari",
+      "fromDestination": "Colombo",
+      "toDestination": "Matara",
+      "scheduledTime": "12:00",
+      "delayTime": "21:30"
+    }
+  ]
+}
