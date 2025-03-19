@@ -1,1 +1,75 @@
-<p>signup works!</p>
+<div class="login-page">
+    <!-- Hero Section -->
+    <div class="hero-section">
+      <div class="hero-content">
+        <h1>Create an Account</h1>
+        <p>Sign up to get started and explore amazing features.</p>
+      </div>
+    </div>
+  
+    <!-- Signup Form Section -->
+    <div class="login-container">
+      <mat-card class="login-card">
+        <mat-card-header>
+          <mat-card-title>Sign Up</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <form (ngSubmit)="onSignup()">
+            <!-- First Name Field -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>First Name</mat-label>
+              <input matInput [(ngModel)]="signupData.first_name" name="first_name" required>
+            </mat-form-field>
+  
+            <!-- Last Name Field -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Last Name</mat-label>
+              <input matInput [(ngModel)]="signupData.last_name" name="last_name" required>
+            </mat-form-field>
+  
+            <!-- Email Field -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Email</mat-label>
+              <input matInput [(ngModel)]="signupData.email" name="email" type="email" required>
+            </mat-form-field>
+  
+            <!-- Phone Number Field -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Phone Number</mat-label>
+              <input matInput [(ngModel)]="signupData.phone_number" name="phone_number" required>
+            </mat-form-field>
+  
+            <!-- Password Field -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Password</mat-label>
+              <input matInput [(ngModel)]="signupData.password" name="password" type="password" required>
+            </mat-form-field>
+  
+            <!-- Confirm Password Field -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Confirm Password</mat-label>
+              <input matInput [(ngModel)]="signupData.confirm_password" name="confirm_password" type="password" required>
+            </mat-form-field>
+  
+            <!-- Signup Button -->
+            <button mat-raised-button color="primary" type="submit" class="full-width">Sign Up</button>
+          </form>
+  
+          <!-- Login Link -->
+          <div class="signup-link">
+            <p>Already have an account? <a routerLink="/login">Log in</a></p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  
+    <!-- Footer Section -->
+    <div class="footer-section">
+        <p>&copy; 2025 Railway Department, Sri Lanka. All rights reserved.</p>
+        <div class="footer-links">
+          <a href="/about">Privacy Policy</a>
+          <a href="/about">Terms of Service</a>
+          <a href="/contact">Contact Us</a>
+        </div>
+      </div>
+    </div>

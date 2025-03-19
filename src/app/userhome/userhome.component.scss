@@ -50,22 +50,4 @@
     padding: 0 8px; /* Adjust padding to match button height */
   }
   
-  .add-record-button {
-    background-color: #007bff; /* Bootstrap blue */
-    color: white; /* White text */
-    border: none; /* Remove border */
-    padding: 0 20px; /* Horizontal padding */
-    height: 40px; /* Match the height of the filter input */
-    font-weight: bold; /* Bold text */
-    border-radius: 4px; /* Rounded corners */
-    cursor: pointer; /* Pointer cursor on hover */
-    transition: background 0.3s ease-in-out; /* Smooth transition */
-    display: flex; /* Use Flexbox for button content alignment */
-    align-items: center; /* Vertically center the button content */
-    justify-content: center; /* Horizontally center the button content */
-    flex-shrink: 0; /* Prevent the button from shrinking */
-  }
-  
-  .add-record-button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
-  }
+ 

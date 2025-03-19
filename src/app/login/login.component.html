@@ -1,1 +1,51 @@
-<p>login works!</p>
+<div class="login-page">
+    <!-- Hero Section -->
+    <div class="hero-section">
+      <div class="hero-content">
+        <h1>Welcome Back!</h1>
+        <p>Sign in to continue to your account and explore amazing features.</p>
+      </div>
+    </div>
+  
+    <!-- Login Form Section -->
+    <div class="login-container">
+      <mat-card class="login-card">
+        <mat-card-header>
+          <mat-card-title>Login</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <form (ngSubmit)="onLogin()">
+            <!-- Username Field -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Username</mat-label>
+              <input matInput [formControl]="usernameControl" name="username" required>
+            </mat-form-field>
+  
+            <!-- Password Field -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Password</mat-label>
+              <input matInput [formControl]="passwordControl" name="password" type="password" required>
+            </mat-form-field>
+  
+            <!-- Login Button -->
+            <button mat-raised-button color="primary" type="submit" class="full-width">Login</button>
+          </form>
+  
+          <!-- Signup Link -->
+          <div class="signup-link">
+            <p>Don't have an account? <a routerLink="/signup">Sign up</a></p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  
+    <!-- Footer Section -->
+    <div class="footer-section">
+      <p>&copy; 2025 Railway Department, Sri Lanka. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="/about">Privacy Policy</a>
+        <a href="/about">Terms of Service</a>
+        <a href="/contact">Contact Us</a>
+      </div>
+    </div>
+  </div>

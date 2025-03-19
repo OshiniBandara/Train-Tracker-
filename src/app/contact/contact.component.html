@@ -1,1 +1,98 @@
-<p>contact works!</p>
+<div class="help-page">
+    <!-- Hero Section -->
+    <div class="hero-section">
+      <div class="hero-content">
+        <h1>Help & Support</h1>
+        <p>We're here to help! Find answers to common questions or contact us for further assistance.</p>
+      </div>
+    </div>
+  
+    <!-- FAQ Section -->
+    <div class="section faq-section">
+      <div class="container">
+        <h2>Frequently Asked Questions</h2>
+        <mat-accordion>
+          <!-- FAQ Item 1 -->
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>How do I book a train ticket?</mat-panel-title>
+            </mat-expansion-panel-header>
+            <p>You can book a train ticket online through our website or mobile app. Simply select your destination, date, and class, and proceed to payment.</p>
+          </mat-expansion-panel>
+  
+          <!-- FAQ Item 2 -->
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>What should I do if I lose my ticket?</mat-panel-title>
+            </mat-expansion-panel-header>
+            <p>If you lose your ticket, please contact our customer support team immediately. You may need to provide your booking reference number and identification.</p>
+          </mat-expansion-panel>
+  
+          <!-- FAQ Item 3 -->
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>Can I cancel or change my booking?</mat-panel-title>
+            </mat-expansion-panel-header>
+            <p>Yes, you can cancel or change your booking online. Please note that cancellation fees may apply depending on the time of cancellation.</p>
+          </mat-expansion-panel>
+  
+          <!-- FAQ Item 4 -->
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>How do I check train schedules?</mat-panel-title>
+            </mat-expansion-panel-header>
+            <p>You can check train schedules on our website or mobile app. Simply enter your departure and destination stations to view available trains.</p>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+    </div>
+  
+    <!-- Contact Form Section -->
+    <div class="section contact-form-section">
+      <div class="container">
+        <h2>Contact Us</h2>
+        <p>If you can't find the answer to your question, feel free to reach out to us.</p>
+        <form (ngSubmit)="onSubmit()">
+          <mat-form-field appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput [(ngModel)]="formData.name" name="name" required>
+          </mat-form-field>
+  
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput [(ngModel)]="formData.email" name="email" type="email" required>
+          </mat-form-field>
+  
+          <mat-form-field appearance="outline">
+            <mat-label>Message</mat-label>
+            <textarea matInput [(ngModel)]="formData.message" name="message" rows="5" required></textarea>
+          </mat-form-field>
+  
+          <button mat-raised-button color="primary" type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+  
+    <!-- Footer Section -->
+        <!-- Footer Section -->
+        <div class="footer-section">
+          <div class="container">
+            <h2>Contact Us</h2>
+            <p>
+              Have questions or need assistance? Reach out to us!
+            </p>
+            <div class="contact-info">
+              <mat-icon>location_on</mat-icon>
+              <p>Railway Headquarters, Colombo, Sri Lanka</p>
+            </div>
+            <div class="contact-info">
+              <mat-icon>phone</mat-icon>
+              <p>+94 11 2 240 222</p>
+            </div>
+            <div class="contact-info">
+              <mat-icon>email</mat-icon>
+              <p>info&#64;srilankarailway.lk</p>
+            </div>
+          </div>
+        </div>
+  </div>

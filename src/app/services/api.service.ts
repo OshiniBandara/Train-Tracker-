@@ -9,6 +9,9 @@ const BASE_URL = 'http://localhost:3000';
 })
 
 export class ApiService {
+  getTrainSchedules() {
+    throw new Error('Method not implemented.');
+  }
   constructor(private http: HttpClient) {}
 
   // Signup API

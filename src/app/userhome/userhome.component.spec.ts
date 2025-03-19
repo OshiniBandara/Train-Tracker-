@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DelayreportComponent } from './delayreport.component';
+import { UserhomeComponent } from './userhome.component';
 
-describe('DelayreportComponent', () => {
-  let component: DelayreportComponent;
-  let fixture: ComponentFixture<DelayreportComponent>;
+describe('UserhomeComponent', () => {
+  let component: UserhomeComponent;
+  let fixture: ComponentFixture<UserhomeComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DelayreportComponent]
+      imports: [UserhomeComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DelayreportComponent);
+    fixture = TestBed.createComponent(UserhomeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

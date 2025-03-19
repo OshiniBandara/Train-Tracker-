@@ -11,13 +11,15 @@ import {MatInputModule} from '@angular/material/input';
 import { HttpClientModule } from '@angular/common/http';
 import { ApiService } from './services/api.service'; 
 import {MatTableModule} from '@angular/material/table';
+import { MatCardModule } from '@angular/material/card';
+
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, MatToolbarModule, MatIconModule, MatButtonModule, RouterModule,MatDialogModule, CommonModule, AddTrainRecordComponent,
-    MatInputModule,MatTableModule ],
+    MatInputModule,MatTableModule, MatCardModule ],
   providers: [ApiService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

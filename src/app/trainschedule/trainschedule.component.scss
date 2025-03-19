@@ -1,0 +1,19 @@
+.container {
+    padding: 16px;
+  }
+  
+  .train-schedule-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px; /* Space between form fields */
+    max-width: 600px; /* Limit form width */
+    margin: 0 auto; /* Center the form */
+  }
+  
+  .form-field {
+    width: 100%; /* Full width for form fields */
+  }
+  
+  button[type="submit"] {
+    align-self: flex-start; /* Align submit button to the left */
+  }
