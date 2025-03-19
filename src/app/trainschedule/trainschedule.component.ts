@@ -11,72 +11,84 @@
 // }
 
 // trainschedule.component.ts
+
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { ApiService } from '../services/api.service'; 
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import { AddTrainRecordComponent } from '../addrecord/addrecord.component';
+import { CommonModule } from '@angular/common'; 
+import { ApiService } from '../services/api.service';
+import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import {MatSort, MatSortModule} from '@angular/material/sort';
+import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatTableDataSource, MatTableModule} from '@angular/material/table';
-import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import { MatIconModule } from '@angular/material/icon'; // Import MatIconModule
+
+
 
 @Component({
   selector: 'app-trainschedule',
   standalone: true,
-  imports: [   
+  imports: [    MatDialogModule,
+    CommonModule,
     AddTrainRecordComponent,
     MatTableModule,
     MatFormFieldModule,
     MatInputModule,
     MatSortModule, // Add MatSortModule for MatSort directive
     MatPaginatorModule, 
-    // Add MatPaginatorModule for MatPaginator directive
+    MatIconModule,// Add MatPaginatorModule for MatPaginator directive
   ],
+  
   templateUrl: './trainschedule.component.html',
-  styleUrls: ['./trainschedule.component.scss']
+  styleUrl: './trainschedule.component.scss'
 })
-export class TrainscheduleComponent implements OnInit {
-  // Columns to display in the table
-  displayedColumns: string[] = ['date', 'trainName', 'fromDestination', 'toDestination', 'scheduledTime'];
+export class TrainscheduleComponent implements OnInit{
 
-  // Table data source
+  displayedColumns: string[] = ['date', 'trainName', 'fromDestination', 'toDestination', 'scheduledTime'];
   dataSource!: MatTableDataSource<any>;
 
-  // Paginator and sort
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private api: ApiService) {}
+  constructor (private dialog: MatDialog, private api : ApiService){
 
+  }
   ngOnInit(): void {
-    // Fetch train schedule data on component initialization
-    this.getTrainSchedules();
+    this.getTrainRecords();
   }
 
-  // Fetch train schedules from the API
-  getTrainSchedules() {
-    this.api.getTrainSchedules()
-    // .subscribe({
-    //   next: (res: any) => {
-    //     console.log(res);
-    //     const trainSchedules = Object.values(res.data); // Convert object to array
-    //     this.dataSource = new MatTableDataSource(trainSchedules); // Initialize dataSource
-    //     this.dataSource.paginator = this.paginator; // Set paginator
-    //     this.dataSource.sort = this.sort; // Set sort
-    //   },
-    //   error: (err: any) => {
-    //     alert('Error while fetching train schedules!');
-    //   }
-    //});
+
+
+  getTrainRecords(){
+    this.api.getTrainRecord()
+    .subscribe({
+      next:(res)=>{
+        console.log(res);
+        const trainRecords = Object.values(res.data);
+        this.dataSource = new MatTableDataSource(trainRecords); // Initialize dataSource
+        this.dataSource.paginator = this.paginator; // Set paginator
+        this.dataSource.sort = this.sort; // Set sort
+      },
+      error:(err)=>{
+        alert("Error While Fetching the Records!");
+      }
+    })
   }
 
-  // Apply filter to the table
+
+
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
+      this.getTrainRecords();
     }
   }
+
 }
+

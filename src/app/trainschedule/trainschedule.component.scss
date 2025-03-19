@@ -1,19 +1,95 @@
+/* Spacer between Contact and Signup buttons */
+.button-spacer {
+  width: 16px;
+}
+
+/* Text buttons (Home, Delay Report, etc.) */
+.text-button {
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin: 0 8px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: rgba(78, 38, 38, 0.1); /* Light hover effect */
+  }
+}
+
+/* Container for the entire content */
 .container {
-    padding: 16px;
+  padding: 16px;
+}
+
+/* Form field styling */
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+/* Filter container styling */
+.filter-container {
+  display: flex; /* Use Flexbox to align items in a row */
+  align-items: center; /* Vertically center the items */
+  gap: 12px; /* Small space between input and button */
+  width: 100%; /* Full width */
+
+  /* Filter input styling */
+  .filter-input {
+    flex: 1; /* Allow the filter input to take up remaining space */
+
+    .mat-form-field-wrapper {
+      padding-bottom: 0; /* Remove extra padding */
+    }
+
+    .mat-form-field-flex {
+      align-items: center; /* Vertically center the input */
+      height: 40px; /* Explicitly set the height of the form field */
+      padding: 0 8px; /* Adjust padding to match button height */
+    }
   }
-  
-  .train-schedule-form {
-    display: flex;
-    flex-direction: column;
-    gap: 16px; /* Space between form fields */
-    max-width: 600px; /* Limit form width */
-    margin: 0 auto; /* Center the form */
+}
+
+/* Table styling */
+table.mat-table {
+  width: 100%;
+  margin-top: 16px;
+  table-layout: fixed; /* Ensure equal column width */
+
+  /* Equal width for all columns */
+  th.mat-header-cell,
+  td.mat-cell {
+    width: 500px; /* Divide table into 5 equal parts (100% / 5 = 20%) */
+    text-align: left; /* Default alignment */
+    padding: 8px; /* Add padding for better spacing */
   }
-  
-  .form-field {
-    width: 100%; /* Full width for form fields */
+
+  /* Right-align for Scheduled Time column */
+  .right-align {
+    text-align: right;
   }
-  
-  button[type="submit"] {
-    align-self: flex-start; /* Align submit button to the left */
+
+  /* Header row styling */
+  th.mat-header-cell {
+    font-weight: 500;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.87);
   }
+
+  /* Cell styling */
+  td.mat-cell {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.87);
+  }
+
+  /* Hover effect on rows */
+  tr.mat-row:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+}
+
+/* Paginator styling */
+mat-paginator {
+  margin-top: 16px;
+}
