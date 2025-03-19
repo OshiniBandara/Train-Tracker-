@@ -102,6 +102,7 @@ export class HomeComponent implements OnInit{
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
+      this.getTrainRecords();
     }
   }
 

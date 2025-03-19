@@ -7,12 +7,13 @@
         <mat-label>Filter</mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="Filter" />
       </mat-form-field>
-
+    
       <!-- Add Record Button -->
-      <button mat-raised-button color="primary" (click)="openDialog()" class="add-record-button">
+      <button mat-raised-button (click)="openDialog()" class="add-record-button">
         Add Record
       </button>
     </div>
+   
 
     <!-- Table -->
     <table mat-table [dataSource]="dataSource" matSort>
@@ -30,13 +31,13 @@
 
       <!-- From Destination Column -->
       <ng-container matColumnDef="fromDestination">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>From Destination</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>From </th>
         <td mat-cell *matCellDef="let element">{{ element.FromDestination }}</td>
       </ng-container>
 
       <!-- To Destination Column -->
       <ng-container matColumnDef="toDestination">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>To Destination</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>To </th>
         <td mat-cell *matCellDef="let element">{{ element.ToDestination }}</td>
       </ng-container>
 
