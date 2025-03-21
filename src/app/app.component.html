@@ -11,15 +11,10 @@
   <span class="example-spacer"></span>
 
   <!-- Home Button -->
-  <button mat-button class="text-button" routerLink="/">
+  <button *ngIf="userType !== 'StandardUser'" mat-button class="text-button" [routerLink]="homeLink">
     Home
   </button>
-
-  <!-- Delay Report Button
-  <button mat-button class="text-button" routerLink="/delayreport">
-    Delay Report
-  </button> -->
-
+  
   <!-- Train Schedule Button -->
   <button mat-button class="text-button" routerLink="/trainschedule">
     Train Schedule
@@ -40,12 +35,16 @@
 
 
   <!-- Login Button -->
-  <button mat-raised-button color="primary" class="login-button" routerLink="/login">
+  <button *ngIf="!(isAuthenticated$ | async)" mat-raised-button color="primary" class="login-button" routerLink="/login">
     Login
   </button>
+
+  <button *ngIf="isAuthenticated$ | async" mat-raised-button color="warn" (click)="onLogout()">
+    Logout
+  </button>
+
+
 </mat-toolbar>
-
-
 
 <!-- Router Outlet -->
 <router-outlet></router-outlet>

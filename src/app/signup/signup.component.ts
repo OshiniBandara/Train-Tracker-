@@ -68,7 +68,7 @@ export class SignupComponent {
     ) {
       // Simulate a successful signup
 
-      this.apiService.singup(this.signupData).subscribe({
+      this.apiService.signup(this.signupData).subscribe({
         next: (response) => {
           this.snackBar.open('Signup successful!', 'Close', { duration: 3000 });
           this.router.navigate(['/login']);

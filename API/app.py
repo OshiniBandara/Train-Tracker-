@@ -7,7 +7,7 @@ from flask_cors import CORS
 from firebase_admin import credentials, auth, db
 
 # Initialize Firebase Admin SDK
-cred_path = os.path.join(os.path.dirname(__file__), "Credentials/serviceAccountKey.json")
+cred_path = os.path.join(os.path.dirname(__file__), "FirebaseKeys/serviceAccountKey.json")
 cred = credentials.Certificate(cred_path)
 firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://train-tracker-app-default-rtdb.firebaseio.com/'

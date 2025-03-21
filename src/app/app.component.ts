@@ -12,7 +12,8 @@ import { MatInputModule} from '@angular/material/input';
 import { ApiService } from './services/api.service'; 
 import { MatTableModule} from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
-
+import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -37,5 +38,33 @@ import { MatCardModule } from '@angular/material/card';
 })
 export class AppComponent {
   title = 'train-tracker';
+  userType: string | null = '';
+  homeLink: string = '';
 
+  isAuthenticated$: Observable<boolean>;
+
+  constructor(private apiService: ApiService,private router: Router) {
+    this.isAuthenticated$ = this.apiService.isAuthenticated$;
+  }
+
+  ngOnInit() {
+    const userType = localStorage.getItem('userType');
+    
+    if (!userType) {
+      // If not logged in, redirect to login page
+      this.router.navigate(['/login']);
+    } else if (userType === 'Admin') {
+      // If logged in as Admin, redirect to /adminhome
+      this.router.navigate(['/adminhome']);
+    } else if (userType === 'StandardUser') {
+      // If logged in as StandardUser, redirect to /userhome
+      this.router.navigate(['/userhome']);
+    }
+  }
+
+  onLogout() {
+    this.apiService.logout();
+    this.userType = null;
+    this.router.navigate(['/login']);
+  }
 }

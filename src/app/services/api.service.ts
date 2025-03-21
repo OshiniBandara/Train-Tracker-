@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject, throwError } from 'rxjs';
+import { tap } from 'rxjs/operators';
+
 
 const BASE_URL = 'http://localhost:3000';
 
@@ -9,19 +11,50 @@ const BASE_URL = 'http://localhost:3000';
 })
 
 export class ApiService {
+  private isAuthenticated = new BehaviorSubject<boolean>(!!localStorage.getItem('token'));
+  isAuthenticated$ = this.isAuthenticated.asObservable();
+
+  constructor(private http: HttpClient) {}
+
+
   getTrainSchedules() {
     throw new Error('Method not implemented.');
   }
-  constructor(private http: HttpClient) {}
+  
 
   // Signup API
-  singup(data: any): Observable<any> {
+  signup(data: any): Observable<any> {
     return this.http.post<any>(`${BASE_URL}/signup`, data);
   }
 
+  // login(data: any): Observable<any> {
+  //   return this.http.post<any>(`${BASE_URL}/login`, data);
+  // }
+
+  // Login API
   login(data: any): Observable<any> {
-    return this.http.post<any>(`${BASE_URL}/login`, data);
+    return this.http.post<any>(`${BASE_URL}/login`, data).pipe(
+      tap(response => {
+        if (response.token) {
+          localStorage.setItem('token', response.token);
+          localStorage.setItem('userType', response.UserType);
+          this.isAuthenticated.next(true);
+        }
+      })
+    );
   }
+
+  // Logout functionality
+  logout(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userType');
+    this.isAuthenticated.next(false);
+  }
+
+  getUserType(): string | null {
+    return localStorage.getItem('userType');
+  }
+
 
   // Get All Users API
   getUsers(): Observable<any> {

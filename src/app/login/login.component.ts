@@ -1,15 +1,3 @@
-// import { Component } from '@angular/core';
-
-// @Component({
-//   selector: 'app-login',
-//   imports: [],
-//   templateUrl: './login.component.html',
-//   styleUrl: './login.component.scss'
-// })
-// export class LoginComponent {
-
-// }
-
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
@@ -65,11 +53,15 @@ export class LoginComponent {
     this.apiService.login(loginData).subscribe({
       next: (response) => {
         this.snackBar.open('Login successful!', 'Close', { duration: 3000 });
-        // Redirect based on UserType
+       
+        // Store the userType in localStorage
+        localStorage.setItem('userType', response.UserType);
+
+        // Redirect to user home based on the user type
         if (response?.UserType === 'StandardUser') {
           this.router.navigate(['/userhome']);
-        } else {
-          this.router.navigate(['/dashboard']);
+        } else if (response?.UserType === 'Admin') {
+          this.router.navigate(['/adminhome']);
         }
       },
       error: (error) => {
