@@ -3,9 +3,10 @@
     color: #333;
   
     .hero-section {
-      background-image: url('/assets/images/railway2.png'); // Add a railway-themed image
+      background-image: url('./../../assets/images/r4.jpeg'); // Add a railway-themed image
       background-size: cover;
       background-position: center;
+      background-repeat: no-repeat;
       height: 400px;
       display: flex;
       align-items: center;

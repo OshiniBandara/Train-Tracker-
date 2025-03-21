@@ -1,64 +1,63 @@
 /* Toolbar styling */
-  mat-toolbar {
-    background-color:#255df7; /* Primary color */
-    color: white;
-    padding: 0 16px;
-    box-shadow: 0 3px 5px rgba(11, 11, 11, 0.2);
-  }
+mat-toolbar {
+  background-color: #202c3d; /* Primary color */
+  color: white;
+  padding: 0 16px;
+  box-shadow: 0 3px 5px rgba(11, 11, 11, 0.2);
+}
 
-  
-  /* App title styling */
-  .app-title {
-    font-size: 20px;
-    font-weight: 500;
-    margin-left: 8px;
-  }
-  
-  /* Spacer to push buttons to the right */
-  .example-spacer {
-    flex: 1 1 auto;
-  }
-  
-  /* Spacer between Contact and Signup buttons */
-  .button-spacer {
-    width: 16px;
-  }
-  
-  /* Text buttons (Home, Delay Report, etc.) */
-  .text-button {
-    color: white;
-    font-size: 14px;
-    font-weight: 500;
-    text-transform: uppercase;
-    margin: 0 8px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .text-button:hover {
-    background-color: rgba(78, 38, 38, 0.1); /* Light hover effect */
-  }
-  
-  /* Login button styling */
-  .login-button {
-    background-color: black; /* Black background */
-    color: white; /* White text */
-    font-size: 14px;
-    font-weight: 500;
-    text-transform: uppercase;
-    margin-left: 16px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .login-button:hover {
-    background-color: rgba(108, 91, 91, 0.8); /* Slightly lighter on hover */
-  }
-  
-  /* Icon buttons (Train icon) */
-  .example-icon {
-    color: white;
-    transition: background-color 0.3s ease;
-  }
-  
-  .example-icon:hover {
-    background-color: rgba(41, 29, 29, 0.1); /* Light hover effect */
-  }
+/* App title styling */
+.app-title {
+  font-size: 20px;
+  font-weight: 500;
+  margin-left: 8px;
+}
+
+/* Spacer to push buttons to the right */
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+/* Spacer between Contact and Signup buttons */
+.button-spacer {
+  width: 16px;
+}
+
+/* Text buttons (Home, Delay Report, etc.) */
+mat-toolbar .text-button {
+  color: white !important;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin: 0 8px;
+  transition: background-color 0.3s ease;
+}
+
+mat-toolbar .text-button:hover {
+  background-color: rgba(78, 38, 38, 0.1); /* Light hover effect */
+}
+
+/* Login button styling */
+mat-toolbar .login-button {
+  background-color: black; /* Black background */
+  color: white !important; /* White text */
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-left: 16px;
+  transition: background-color 0.3s ease;
+}
+
+mat-toolbar .login-button:hover {
+  background-color: rgba(108, 91, 91, 0.8); /* Slightly lighter on hover */
+}
+
+/* Icon buttons (Train icon) */
+mat-toolbar .example-icon {
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+mat-toolbar .example-icon:hover {
+  background-color: rgba(41, 29, 29, 0.1); /* Light hover effect */
+}
