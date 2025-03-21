@@ -1,10 +1,13 @@
+#Imports
 import firebase_admin
 import datetime
 import bcrypt
 import os
+import smtplib
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from firebase_admin import credentials, auth, db
+from email.message import EmailMessage
 
 # Initialize Firebase Admin SDK
 cred_path = os.path.join(os.path.dirname(__file__), "FirebaseKeys/serviceAccountKey.json")
@@ -17,16 +20,8 @@ firebase_admin.initialize_app(cred, {
 app = Flask(__name__)
 CORS(app)
 
-# Password Hashing Functions
-def hash_password(password):
-    salt = bcrypt.gensalt()
-    hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
-    return hashed_password.decode('utf-8')
 
-def check_password(hashed_password, input_password):
-    return bcrypt.checkpw(input_password.encode('utf-8'), hashed_password.encode('utf-8'))
-
-
+# API Methods Starts here
 # Signup API Endpoint
 @app.route('/signup', methods=['POST'])
 def register():
@@ -122,12 +117,12 @@ def get_users():
         return jsonify({"error": str(e)}), 500
 
 
-#  Add Train Record
+# Add Train Record
 @app.route('/addTrainRecord', methods=['POST'])
 def add_train_record():
     try:
         data = request.json
-        train_ref = db.reference("TrainRecords").push()  # Generate unique train record ID
+        train_ref = db.reference("TrainRecords").push()
         train_id = train_ref.key  
 
         train_record = {
@@ -143,6 +138,27 @@ def add_train_record():
 
         # Save train record
         train_ref.set(train_record)
+        
+        # Calculate delay message
+        delay_message = calculate_delay(data.get("ScheduledTime"), data.get("DelayTime"))
+            
+        # Email subject and body
+        subject = "Train Delay Alert"
+        body = f"""
+        Train {data.get('TrainName')} from {data.get('FromDestination')} to {data.get('ToDestination')} 
+        will be delayed by {delay_message}.
+        
+        Scheduled Time: {data.get('ScheduledTime')}
+        New Departure Time: {data.get('DelayTime')}
+
+        Thank you for using Train Tracker."""
+        
+        # Fetch all users' emails and send email alerts
+        users = db.reference("Users").get()
+        if users:
+            emails = [user.get("Username") for user in users.values() if "Username" in user]
+            for email in emails:
+                email_alert(subject, body, email)
 
         return jsonify({"message": "Train record added successfully", "TrainId": train_id}), 201
 
@@ -168,8 +184,32 @@ def update_train_record(train_id):
 
         # Update in Firebase Realtime Database
         db.reference("TrainRecords").child(train_id).update(updated_record)
+        
+        # Calculate delay message
+        delay_message = calculate_delay(data.get("ScheduledTime"), data.get("DelayTime"))
 
-        return jsonify({"message": "Train record updated successfully"}), 200
+        # Email subject (Dynamic train name)
+        subject = f"Train Delay Update: {data.get('TrainName')}"
+
+        # Email body (Clear update message)
+        body = f"""
+        Train {data.get('TrainName')} from {data.get('FromDestination')} to {data.get('ToDestination')}  
+        now has an updated delay of {delay_message}.
+
+        Scheduled Time: {data.get('ScheduledTime')}
+        New Departure Time: {data.get('DelayTime')}
+
+        Thank you for using Train Tracker.
+        """
+
+        # Fetch all users' emails (stored under "Username" key)
+        users = db.reference("Users").get()
+        if users:
+            emails = [user.get("Username") for user in users.values() if "Username" in user]
+            for email in emails:
+                email_alert(subject, body, email)
+
+        return jsonify({"message": "Train record updated successfully, emails sent"}), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -222,8 +262,60 @@ def get_all_train_records():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+# API Methods Ends here
+    
+
+# Helper Methods Starts here
+# Password Hashing Functions
+def hash_password(password):
+    salt = bcrypt.gensalt()
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
+    return hashed_password.decode('utf-8')
+
+def check_password(hashed_password, input_password):
+    return bcrypt.checkpw(input_password.encode('utf-8'), hashed_password.encode('utf-8'))
 
 
-# Run Flask
+# Email Sending Function
+def email_alert(subject, body, to):
+    msg = EmailMessage()
+    msg.set_content(body)
+    msg['subject'] = subject
+    msg['to'] = to
+    
+    user = "traintrackerappsl@gmail.com"
+    password = "obereexezpqxwebn"  
+
+    try:
+        server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+        server.login(user, password)
+        server.send_message(msg)
+        server.quit()
+        print(f"Email sent to {to}")
+    except Exception as e:
+        print(f"Failed to send email: {e}")
+        
+
+# Function to Calculate Delay
+def calculate_delay(scheduled_time, delay_time):
+    try:
+        # Convert time to datetime objects
+        fmt = "%I:%M %p"
+        scheduled = datetime.datetime.strptime(scheduled_time, fmt)
+        delayed = datetime.datetime.strptime(delay_time, fmt)
+
+        # Calculate delay in minutes
+        delay_minutes = (delayed - scheduled).total_seconds() / 60
+        delay_hours = delay_minutes / 60
+
+        return f"{delay_hours:.1f}h"
+    except Exception as e:
+        return "Unknown delay time"
+
+# Helper Methods Ends here
+
+
+# Run Flask App
 if __name__ == "__main__":
     app.run(debug=True, port=3000)
