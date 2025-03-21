@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-
 const BASE_URL = 'http://localhost:3000';
 
 @Injectable({
@@ -20,7 +19,6 @@ export class ApiService {
   getTrainSchedules() {
     throw new Error('Method not implemented.');
   }
-  
 
   // Signup API
   signup(data: any): Observable<any> {
@@ -54,7 +52,6 @@ export class ApiService {
   getUserType(): string | null {
     return localStorage.getItem('userType');
   }
-
 
   // Get All Users API
   getUsers(): Observable<any> {

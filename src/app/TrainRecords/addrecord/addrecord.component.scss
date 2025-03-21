@@ -1,23 +1,27 @@
 /* Center the dialog title */
 
+h3{
+  text-align: center;
+}
+
 ::ng-deep .mat-dialog-title {
   text-align: center;
   font-size: 24px; /* Adjust the font size as needed */
   font-weight: 500; /* Adjust the font weight as needed */
   margin: 24px; /* Remove default margin */
-  padding: 16px 0; /* Add padding for spacing */
+  padding: 8px 0; /* Add padding for spacing */
   width: 100%; /* Ensure the title takes full width */
 }
 
 // /* Add padding to the dialog container */
 ::ng-deep .mat-dialog-container {
-  padding: 24px; /* Adjust the value as needed */
+  padding: 20px; /* Adjust the value as needed */
 }
 
 /* Full-width form fields */
 .full-width {
   width: 100%;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 
 /* Space between dialog actions */
@@ -33,5 +37,6 @@ mat-dialog-actions {
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
+
 
 

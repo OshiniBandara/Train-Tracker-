@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
-import { ApiService } from '../services/api.service';
+import { ApiService } from '../../services/api.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 
@@ -53,8 +53,6 @@ export class LoginComponent {
     this.apiService.login(loginData).subscribe({
       next: (response) => {
         this.snackBar.open('Login successful!', 'Close', { duration: 3000 });
-       
-        // Store the userType in localStorage
         localStorage.setItem('userType', response.UserType);
 
         // Redirect to user home based on the user type

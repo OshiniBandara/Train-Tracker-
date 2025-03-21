@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialogModule} from '@angular/material/dialog';
 import { MatDialog} from '@angular/material/dialog';
-import { AddTrainRecordComponent } from '../addrecord/addrecord.component';
-import { EditTrainRecordComponent } from '../edit-train-record/edit-train-record.component';
+import { AddTrainRecordComponent } from '../TrainRecords/addrecord/addrecord.component';
+import { EditTrainRecordComponent } from '../TrainRecords/edit-train-record/edit-train-record.component';
 import { CommonModule } from '@angular/common'; 
 import { ApiService } from '../services/api.service';
 import { MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
@@ -13,7 +13,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule} from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon'; // Import MatIconModule
-import { DeleteTrainRecordComponent } from '../delete-train-record/delete-train-record.component';
+import { DeleteTrainRecordComponent } from '../TrainRecords/delete-train-record/delete-train-record.component';
 
 
 @Component({

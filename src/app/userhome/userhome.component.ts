@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatDialog} from '@angular/material/dialog';
-import { AddTrainRecordComponent } from '../addrecord/addrecord.component';
+import { AddTrainRecordComponent } from '../TrainRecords/addrecord/addrecord.component';
 import { CommonModule } from '@angular/common'; 
 import { ApiService } from '../services/api.service';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
@@ -62,9 +62,6 @@ export class UserhomeComponent implements OnInit{
       }
     })
   }
-
-
-
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

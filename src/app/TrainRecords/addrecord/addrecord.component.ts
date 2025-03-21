@@ -6,7 +6,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ApiService } from '../services/api.service';
+import { ApiService } from '../../services/api.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
 
 @Component({
@@ -54,27 +54,6 @@ export class AddTrainRecordComponent {
       this.form.controls['DelayTime'].setValue(this.editData.DelayTime);
     }
   }
-
-  // Handle form submission
-  // onSubmit() {
-  //   if(!this.editData){
-  //     if (this.form.valid) {
-  //       this.api.postTrainRecord(this.form.value)
-  //       .subscribe({
-  //         next:(res)=>{
-  //           alert("Train Record Added Successfully!")
-  //           this.form.reset();
-  //           this.dialogRef.close('Recorded');
-  //         },
-  //           error:()=>{
-  //             alert("Error While Adding the Train Record!") 
-  //           }
-  //       })
-  //     } else {
-  //       this.updateRecord()
-  //     }
-  //   }
-  // }
 
   onSubmit() {
     if (this.form.valid) {

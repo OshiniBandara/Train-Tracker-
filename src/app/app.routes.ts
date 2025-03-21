@@ -3,11 +3,11 @@ import { HomeComponent } from './home/home.component';
 import { TrainscheduleComponent } from './trainschedule/trainschedule.component';
 import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
-import { SignupComponent } from './signup/signup.component';
-import { LoginComponent } from './login/login.component';
-import { AddTrainRecordComponent} from './addrecord/addrecord.component'
+import { SignupComponent } from './Authentication/signup/signup.component';
+import { LoginComponent } from './Authentication/login/login.component';
+import { AddTrainRecordComponent} from './TrainRecords/addrecord/addrecord.component'
 import { UserhomeComponent } from './userhome/userhome.component';
-import { EditTrainRecordComponent } from './edit-train-record/edit-train-record.component';
+import { EditTrainRecordComponent } from './TrainRecords/edit-train-record/edit-train-record.component';
 import { AuthGuard } from './auth.guard';
 
 

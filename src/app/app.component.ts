@@ -40,7 +40,6 @@ export class AppComponent {
   title = 'train-tracker';
   userType: string | null = '';
   homeLink: string = '';
-
   isAuthenticated$: Observable<boolean>;
 
   constructor(private apiService: ApiService,private router: Router) {
@@ -48,23 +47,20 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    const userType = localStorage.getItem('userType');
-    
-    if (!userType) {
-      // If not logged in, redirect to login page
-      this.router.navigate(['/login']);
-    } else if (userType === 'Admin') {
-      // If logged in as Admin, redirect to /adminhome
-      this.router.navigate(['/adminhome']);
-    } else if (userType === 'StandardUser') {
-      // If logged in as StandardUser, redirect to /userhome
-      this.router.navigate(['/userhome']);
-    }
+    this.isAuthenticated$.subscribe(isAuthenticated => {
+      if (isAuthenticated) {
+        this.userType = localStorage.getItem('userType');
+        if (this.userType === 'Admin') {
+          this.homeLink = '/adminhome';
+        } else if (this.userType === 'StandardUser') {
+          this.homeLink = '/userhome';
+        }
+      }
+    });
   }
 
   onLogout() {
     this.apiService.logout();
-    this.userType = null;
     this.router.navigate(['/login']);
   }
 }

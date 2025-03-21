@@ -1,28 +1,14 @@
-// import { Component } from '@angular/core';
-
-// @Component({
-//   selector: 'app-trainschedule',
-//   imports: [],
-//   templateUrl: './trainschedule.component.html',
-//   styleUrl: './trainschedule.component.scss'
-// })
-// export class TrainscheduleComponent {
-
-// }
-
-// trainschedule.component.ts
-
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatDialog} from '@angular/material/dialog';
-import { AddTrainRecordComponent } from '../addrecord/addrecord.component';
+import { AddTrainRecordComponent } from '../TrainRecords/addrecord/addrecord.component';
 import { CommonModule } from '@angular/common'; 
 import { ApiService } from '../services/api.service';
-import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
-import {MatSort, MatSortModule} from '@angular/material/sort';
-import {MatTableDataSource, MatTableModule} from '@angular/material/table';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import { MatSort, MatSortModule} from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule} from '@angular/material/table';
+import { MatInputModule} from '@angular/material/input';
+import { MatFormFieldModule} from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon'; // Import MatIconModule
 
 
