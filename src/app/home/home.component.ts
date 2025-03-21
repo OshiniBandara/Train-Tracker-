@@ -16,7 +16,6 @@ import { MatIconModule } from '@angular/material/icon'; // Import MatIconModule
 import { DeleteTrainRecordComponent } from '../delete-train-record/delete-train-record.component';
 
 
-
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -64,32 +63,63 @@ export class HomeComponent implements OnInit{
     });
   }
 
-  getTrainRecords(){
+  getTrainRecords() {
     this.api.getTrainRecord()
-    .subscribe({
-      next:(res)=>{
-        console.log(res);
-        const trainRecords = Object.values(res.data);
-        this.dataSource = new MatTableDataSource(trainRecords); // Initialize dataSource
-        this.dataSource.paginator = this.paginator; // Set paginator
-        this.dataSource.sort = this.sort; // Set sort
-      },
-      error:(err)=>{
-        alert("Error While Fetching the Records!");
-      }
-    })
+      .subscribe({
+        next: (res) => {
+          console.log('API Response:', res); 
+          
+          // Check if data exists and has records
+          if (res && res.data) {
+            const trainRecords = Object.values(res.data);
+            if (trainRecords.length === 0) {
+              console.log("No train records found.");
+              this.dataSource = new MatTableDataSource<any>([]);  // Set empty data source
+            } else {
+              this.dataSource = new MatTableDataSource<any>(trainRecords);
+            }
+          } else {
+            console.log("No data found in response.");
+            this.dataSource = new MatTableDataSource<any>([]);  // Handle empty response gracefully
+          }
+  
+          // Apply pagination and sorting
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        },
+        error: (err) => {
+          console.log("Error fetching train records:", err);
+          // Handle API errors such as 404 or 500
+          if (err.status === 404) {
+            console.log("API endpoint not found:", err);
+          } else {
+            alert("Error while fetching the records!");
+          }
+          this.dataSource = new MatTableDataSource<any>([]);  // Handle error by setting empty data source
+        }
+      });
   }
+  
 
+  // Edit a train record
   editRecord(row : any){
-    debugger;
-    console.log('Selected Record:', row);
-    this.dialog.open(EditTrainRecordComponent,{
-      width: '800px', // Set the width of the dialog
-      height: '600px', // Set height
+    const dialogRef = this.dialog.open(EditTrainRecordComponent, {
+      width: '800px', 
+      height: '600px',
       data: row
-    })
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      
+      if (result) {
+        console.log('Record updated, refreshing data...');
+        this.getTrainRecords(); 
+      }
+    });
   }
 
+
+  // Delete a train record
   deleteRecord(id : string ){
     debugger;
     console.log("Deleting record with ID: ", id); 
@@ -106,25 +136,27 @@ export class HomeComponent implements OnInit{
   }
 
 
+  // Filter Data
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
-      this.getTrainRecords();
+      //this.getTrainRecords();
     }
   }
 
+  // Delete Dialog box
   openDeleteDialog(recordId: string): void {
-    
-    const dialogRef = this.dialog.open(DeleteTrainRecordComponent);
+    const dialogRef = this.dialog.open(DeleteTrainRecordComponent, {
+      data: { recordId }
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.deleteRecord(recordId);  // If 'Yes' is clicked, proceed with deleting the record
+        this.deleteRecord(recordId);
       }
     });
   }
-
 }

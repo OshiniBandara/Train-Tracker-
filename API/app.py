@@ -1,34 +1,23 @@
-# Imports
+import firebase_admin
+import datetime
+import bcrypt
+import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import pyrebase
-import datetime
-import uuid  
-import bcrypt
+from firebase_admin import credentials, auth, db
 
-
-# Firebase Configuration
-firebaseConfig = {
-    "apiKey": "AIzaSyBpnhwt9sKPZbT4a51ZLDckmA_bGglguaI",
-    "authDomain": "train-tracker-app.firebaseapp.com",
-    "databaseURL": "https://train-tracker-app-default-rtdb.firebaseio.com/",
-    "projectId": "train-tracker-app",
-    "storageBucket": "train-tracker-app.firebasestorage.app",
-    "messagingSenderId": "1043323291450",
-    "appId": "1:1043323291450:web:36483fc1518ee5d360f203",
-    "measurementId": "G-SJR6KB67YC"
-}
-
-# Initialize Firebase
-firebase = pyrebase.initialize_app(firebaseConfig)
-auth = firebase.auth()
-db = firebase.database()
+# Initialize Firebase Admin SDK
+cred_path = os.path.join(os.path.dirname(__file__), "Credentials/serviceAccountKey.json")
+cred = credentials.Certificate(cred_path)
+firebase_admin.initialize_app(cred, {
+    'databaseURL': 'https://train-tracker-app-default-rtdb.firebaseio.com/'
+})
 
 # Initialize Flask App
 app = Flask(__name__)
 CORS(app)
 
-
+# Password Hashing Functions
 def hash_password(password):
     salt = bcrypt.gensalt()
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
@@ -38,21 +27,12 @@ def check_password(hashed_password, input_password):
     return bcrypt.checkpw(input_password.encode('utf-8'), hashed_password.encode('utf-8'))
 
 
-
-# @app.route("/test", methods=["GET"])
-# def test():
-#     return jsonify({"message": "Flask API is working!"}), 200
-
-
-#-----Users API Endpoints-----#
-
 # Signup API Endpoint
 @app.route('/signup', methods=['POST'])
 def register():
     try:
         data = request.json
 
-        # Get user input
         first_name = data.get("first_name")
         last_name = data.get("last_name")
         email = data.get("email")
@@ -60,34 +40,36 @@ def register():
         password = data.get("password")
         confirm_password = data.get("confirm_password")
 
-        # Validate passwords
         if password != confirm_password:
             return jsonify({"error": "Passwords do not match"}), 400
 
         # Create user in Firebase Authentication
-        user = auth.create_user_with_email_and_password(email, password)
-        userId = user["localId"]  # Get unique Firebase UID
-        
+        user = auth.create_user(
+            email=email,
+            password=password,
+            phone_number=phone_number
+        )
+
         # Hash the password
         hashed_password = hash_password(password)
 
         # Prepare user data
         user_data = {
-            "UserId": userId,
+            "UserId": user.uid,
             "UserType": "StandardUser",
             "FirstName": first_name,
             "LastName": last_name,
             "Username": email,
             "PhoneNumber": phone_number,
-            "Password": hashed_password,
+            "Password": hashed_password,  # Store hashed password
             "CreatedOn": str(datetime.datetime.now()),
             "CreatedBy": "System"
         }
 
-        # Save user in Realtime Database
-        db.child("Users").child(userId).set(user_data)
+        # Save user data in Realtime Database
+        db.reference("Users").child(user.uid).set(user_data)
 
-        return jsonify({"message": "User registered successfully!", "UserId": userId}), 201
+        return jsonify({"message": "User registered successfully!", "UserId": user.uid}), 201
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -101,55 +83,55 @@ def login():
         email = data.get("email")
         password = data.get("password")
 
-        # Authenticate user with Firebase Auth
-        user = auth.sign_in_with_email_and_password(email, password)
-        user_id = user["localId"]
+        # Authenticate user via Firebase Authentication
+        user = auth.get_user_by_email(email)
 
         # Get user details from Realtime Database
-        user_data = db.child("Users").child(user_id).get().val()
+        user_data = db.reference("Users").child(user.uid).get()
+
         if not user_data:
             return jsonify({"error": "User not found"}), 404
 
-        # Verify the hashed password
+        # Verify password
         if not check_password(user_data["Password"], password):
             return jsonify({"error": "Invalid credentials"}), 401
 
+        # Generate authentication token
+        token = auth.create_custom_token(user.uid)
 
-        # Determine redirect URL based on UserType
-        user_type = user_data.get("UserType", "Standard User")
-        
         return jsonify({
-            "message": "Login successful!", 
-            "UserType": user_type
+            "message": "Login successful!",
+            "UserId": user.uid,
+            "UserType": user_data.get("UserType", "StandardUser"),
+            "token": token.decode("utf-8")
         }), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    
+
 
 # Get All Users
 @app.route('/users', methods=['GET'])
 def get_users():
     try:
-        users = db.child("Users").get().val()  # Get all users
+        users = db.reference("Users").get()
         if users:
             return jsonify(users), 200
-        else:
-            return jsonify({"message": "No users found"}), 404
+        return jsonify({"message": "No users found"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    
-    
 
-#-----Train API Endpoints-----#
 
-# Add Train Record
+#  Add Train Record
 @app.route('/addTrainRecord', methods=['POST'])
 def add_train_record():
     try:
         data = request.json
-        
+        train_ref = db.reference("TrainRecords").push()  # Generate unique train record ID
+        train_id = train_ref.key  
+
         train_record = {
+            "TrainId": train_id,
             "Date": data.get("Date"),
             "TrainName": data.get("TrainName"),
             "FromDestination": data.get("FromDestination"),
@@ -158,20 +140,22 @@ def add_train_record():
             "DelayTime": data.get("DelayTime"),
             "CreatedOn": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
-          # Save record in Firebase Realtime Database
-        db.child("TrainRecords").push(train_record)
 
-        return jsonify({"message": "Train record added successfully", "data": train_record}), 201
+        # Save train record
+        train_ref.set(train_record)
+
+        return jsonify({"message": "Train record added successfully", "TrainId": train_id}), 201
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    
-    
-# Update Train Record
-@app.route("/updateTrainRecord/<record_id>", methods=["PUT"])
-def update_train_record(record_id):
+
+
+#  Update Train Record
+@app.route("/updateTrainRecord/<train_id>", methods=["PUT"])
+def update_train_record(train_id):
     try:
         data = request.json
+
         updated_record = {
             "Date": data.get("Date"),
             "TrainName": data.get("TrainName"),
@@ -182,74 +166,63 @@ def update_train_record(record_id):
             "UpdatedOn": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
 
-        # Update record in Firebase Realtime Database
-        db.child("TrainRecords").child(record_id).update(updated_record)
+        # Update in Firebase Realtime Database
+        db.reference("TrainRecords").child(train_id).update(updated_record)
 
-        return jsonify({"message": "Train record updated successfully", "data": updated_record}), 200
+        return jsonify({"message": "Train record updated successfully"}), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
 
-# Delete a train record by ID
-@app.route("/deleteTrainRecord/<record_id>", methods=["DELETE"])
-def delete_train_record(record_id):
+# Delete Train Record
+@app.route("/deleteTrainRecord/<train_id>", methods=["DELETE"])
+def delete_train_record(train_id):
     try:
-        ref = db.child("TrainRecords").child(record_id)
-        
-        # Fetch the record from Firebase to check if it exists
-        record = ref.get()
+        train_ref = db.reference("TrainRecords").child(train_id)
 
         # Check if the record exists
-        if record.val() is None:
+        if not train_ref.get():
             return jsonify({"error": "Record not found"}), 404
 
-        # Delete the record from Firebase using the reference
-        ref.remove() 
+        # Delete from Firebase Realtime Database
+        train_ref.delete()
 
         return jsonify({"message": "Train record deleted successfully"}), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    
 
 
 # Get a specific train record by ID
-@app.route("/getTrainRecordById/<record_id>", methods=["GET"])
-def get_train_record_by_id(record_id):
+@app.route("/getTrainRecordById/<train_id>", methods=["GET"])
+def get_train_record_by_id(train_id):
     try:
-        # Reference the specific record under TrainRecords
-        ref = db.child("TrainRecords").child(record_id)
-        
-        # Fetch the record from Firebase
-        record = ref.get()
-        
-        # Check if the record exists
-        if record.val() is None:
+        train_record = db.reference("TrainRecords").child(train_id).get()
+
+        if not train_record:
             return jsonify({"error": "Record not found"}), 404
-        
-        return jsonify({"data": record.val()}), 200
+
+        return jsonify({"data": train_record}), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
 
 
 # Get All Train Records
 @app.route("/getAllTrainRecords", methods=["GET"])
 def get_all_train_records():
     try:
-        train_records = db.child("TrainRecords").get().val()
+        train_records = db.reference("TrainRecords").get()
 
         if not train_records:
-            return jsonify({"message": "No train records found"}), 404
+            return jsonify({"message": "No train records found", "data": []}), 200
 
         return jsonify({"message": "Train records retrieved successfully", "data": train_records}), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    
-    
+
 
 # Run Flask
 if __name__ == "__main__":

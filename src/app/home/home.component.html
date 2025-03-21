@@ -13,7 +13,6 @@
         Add Record
       </button>
     </div>
-   
 
     <!-- Table -->
     <table mat-table [dataSource]="dataSource" matSort>
@@ -59,7 +58,7 @@
           <button mat-icon-button (click)="editRecord(element)" color="primary">
             <mat-icon>edit</mat-icon>
           </button>
-          <button mat-icon-button (click)="openDeleteDialog(element.id)" color="warn">
+          <button mat-icon-button (click)="openDeleteDialog(element.TrainId)" color="warn">
             <mat-icon>delete</mat-icon>
           </button>
         </td>
@@ -69,6 +68,10 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
+
+    <div *ngIf="dataSource.data.length === 0" class="no-records-message">
+      No train records found.
+    </div>
 
     <!-- Paginator -->
     <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>

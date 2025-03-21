@@ -40,8 +40,8 @@ export class EditTrainRecordComponent {
       TrainName: [data.TrainName, Validators.required],
       FromDestination: [data.FromDestination, Validators.required],
       ToDestination: [data.ToDestination, Validators.required],
-      ScheduledTime: [data.ScheduledTime, Validators.required],
-      DelayTime: [data.DelayTime, Validators.required]
+      ScheduledTime: [this.convertTo24HourFormat(data.ScheduledTime), Validators.required],
+      DelayTime: [this.convertTo24HourFormat(data.DelayTime), Validators.required]
     });
   }
 
@@ -51,10 +51,12 @@ export class EditTrainRecordComponent {
 
       const formData = this.editForm.value;
 
+      const trainId = this.data.TrainId
+
       formData.ScheduledTime = this.convertTo12HourFormat(formData.ScheduledTime);
       formData.DelayTime = this.convertTo12HourFormat(formData.DelayTime);
 
-      this.apiService.putTrainRecord(this.data.id, formData).subscribe({
+      this.apiService.putTrainRecord(trainId, formData).subscribe({
         next: (response) => {
           this.snackBar.open(response?.message || 'Train record updated successfully!', 'Close', { duration: 3000 });
           this.dialogRef.close(true);
@@ -81,12 +83,33 @@ export class EditTrainRecordComponent {
     return `${hours12WithLeadingZero}:${minutes} ${suffix}`;
   }
 
+  // Function to convert 12-hour time (AM/PM) to 24-hour time format
+  convertTo24HourFormat(time: string): string {
+    const [timePart, suffix] = time.split(' ');
+    let [hours, minutes] = timePart.split(':').map(Number);
+
+    if (suffix === 'PM' && hours !== 12) hours += 12;
+    if (suffix === 'AM' && hours === 12) hours = 0;
+
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+  }
+
+
+  // Function to convert date string in MM/DD/YYYY format to a Date object
   convertToDate(dateStr: string): Date | null {
     if (!dateStr) return null;
-
-    // Assuming format is MM/DD/YYYY
-    const [month, day, year] = dateStr.split('/').map(Number);
-    return new Date(year, month - 1, day);
+  
+    // Parse the date string to create a Date object
+    const date = new Date(dateStr);
+  
+    // If the date is invalid, log an error and return null
+    if (isNaN(date.getTime())) {
+      console.error('Invalid date:', dateStr);
+      return null;
+    }
+  
+    console.log('Converted Date:', date); // Log the converted Date for debugging
+    return date;
   }
 
 }
