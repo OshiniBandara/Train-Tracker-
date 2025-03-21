@@ -1,27 +1,33 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatDialog} from '@angular/material/dialog';
+import { MatDialogModule} from '@angular/material/dialog';
+import { MatDialog} from '@angular/material/dialog';
 import { AddTrainRecordComponent } from '../addrecord/addrecord.component';
+import { EditTrainRecordComponent } from '../edit-train-record/edit-train-record.component';
 import { CommonModule } from '@angular/common'; 
 import { ApiService } from '../services/api.service';
-import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
-import {MatSort, MatSortModule} from '@angular/material/sort';
-import {MatTableDataSource, MatTableModule} from '@angular/material/table';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import { MatSort, MatSortModule} from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule} from '@angular/material/table';
+import { MatInputModule} from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatFormFieldModule} from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon'; // Import MatIconModule
+import { DeleteTrainRecordComponent } from '../delete-train-record/delete-train-record.component';
 
 
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [    MatDialogModule,
+  imports: [    
+    MatDialogModule,
     CommonModule,
-    AddTrainRecordComponent,
     MatTableModule,
     MatFormFieldModule,
     MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatSortModule, // Add MatSortModule for MatSort directive
     MatPaginatorModule, 
     MatIconModule,// Add MatPaginatorModule for MatPaginator directive
@@ -75,14 +81,18 @@ export class HomeComponent implements OnInit{
   }
 
   editRecord(row : any){
-    this.dialog.open(AddTrainRecordComponent,{
+    debugger;
+    console.log('Selected Record:', row);
+    this.dialog.open(EditTrainRecordComponent,{
       width: '800px', // Set the width of the dialog
-      height: '700px', // Set height
+      height: '600px', // Set height
       data: row
     })
   }
 
   deleteRecord(id : string ){
+    debugger;
+    console.log("Deleting record with ID: ", id); 
     this.api.deleteTrainRecord(id)
     .subscribe({
       next:(res)=>{
@@ -104,6 +114,17 @@ export class HomeComponent implements OnInit{
       this.dataSource.paginator.firstPage();
       this.getTrainRecords();
     }
+  }
+
+  openDeleteDialog(recordId: string): void {
+    
+    const dialogRef = this.dialog.open(DeleteTrainRecordComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.deleteRecord(recordId);  // If 'Yes' is clicked, proceed with deleting the record
+      }
+    });
   }
 
 }

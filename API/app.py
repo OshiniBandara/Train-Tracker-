@@ -189,13 +189,56 @@ def update_train_record(record_id):
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+# Delete a train record by ID
+@app.route("/deleteTrainRecord/<record_id>", methods=["DELETE"])
+def delete_train_record(record_id):
+    try:
+        ref = db.child("TrainRecords").child(record_id)
+        
+        # Fetch the record from Firebase to check if it exists
+        record = ref.get()
+
+        # Check if the record exists
+        if record.val() is None:
+            return jsonify({"error": "Record not found"}), 404
+
+        # Delete the record from Firebase using the reference
+        ref.remove() 
+
+        return jsonify({"message": "Train record deleted successfully"}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
     
-    
+
+
+# Get a specific train record by ID
+@app.route("/getTrainRecordById/<record_id>", methods=["GET"])
+def get_train_record_by_id(record_id):
+    try:
+        # Reference the specific record under TrainRecords
+        ref = db.child("TrainRecords").child(record_id)
+        
+        # Fetch the record from Firebase
+        record = ref.get()
+        
+        # Check if the record exists
+        if record.val() is None:
+            return jsonify({"error": "Record not found"}), 404
+        
+        return jsonify({"data": record.val()}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+
 # Get All Train Records
 @app.route("/getAllTrainRecords", methods=["GET"])
 def get_all_train_records():
     try:
-        # Get all records from Firebase Realtime Database
         train_records = db.child("TrainRecords").get().val()
 
         if not train_records:

@@ -19,6 +19,10 @@ export class ApiService {
     return this.http.post<any>(`${BASE_URL}/signup`, data);
   }
 
+  login(data: any): Observable<any> {
+    return this.http.post<any>(`${BASE_URL}/login`, data);
+  }
+
   // Get All Users API
   getUsers(): Observable<any> {
     return this.http.get<any>(`${BASE_URL}/users`);
@@ -44,7 +48,7 @@ export class ApiService {
   }
 
   // Update a train record by ID
-  putTrainRecord(data: any, id: string): Observable<any> {
+  putTrainRecord(id: string, data: any): Observable<any> {
     return this.http.put<any>(`${BASE_URL}/updateTrainRecord/${id}`, data);  // Update using the ID
   }
 
@@ -52,4 +56,5 @@ export class ApiService {
   deleteTrainRecord(id: string): Observable<any> {
     return this.http.delete<any>(`${BASE_URL}/deleteTrainRecord/${id}`);  // Delete by record ID
   }
+
 }

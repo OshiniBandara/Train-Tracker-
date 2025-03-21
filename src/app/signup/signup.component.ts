@@ -19,6 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-signup',
@@ -32,7 +33,7 @@ import { RouterLink } from '@angular/router';
     RouterLink,
   ],
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.scss'], 
+  styleUrls: ['./signup.component.scss'],
 })
 export class SignupComponent {
   // Signup form data
@@ -45,7 +46,11 @@ export class SignupComponent {
     confirm_password: '',
   };
 
-  constructor(private router: Router, private snackBar: MatSnackBar) {}
+  constructor(
+    private router: Router,
+    private snackBar: MatSnackBar,
+    private apiService: ApiService
+  ) { }
 
   // Handle signup form submission
   onSignup() {
@@ -62,8 +67,16 @@ export class SignupComponent {
       this.signupData.password
     ) {
       // Simulate a successful signup
-      this.snackBar.open('Signup successful!', 'Close', { duration: 3000 });
-      this.router.navigate(['/login']); // Redirect to login page
+
+      this.apiService.singup(this.signupData).subscribe({
+        next: (response) => {
+          this.snackBar.open('Signup successful!', 'Close', { duration: 3000 });
+          this.router.navigate(['/login']);
+        },
+        error: (error) => {
+          this.snackBar.open(error?.error?.message || 'Signup failed. Please try again.', 'Close', { duration: 3000 });
+        }
+      });
     } else {
       this.snackBar.open('Please fill in all fields.', 'Close', { duration: 3000 });
     }

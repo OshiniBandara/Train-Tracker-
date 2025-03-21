@@ -7,11 +7,8 @@
           <mat-label>Filter</mat-label>
           <input matInput (keyup)="applyFilter($event)" placeholder="Filter" />
         </mat-form-field>
-      
-
       </div>
      
-  
       <!-- Table -->
       <table mat-table [dataSource]="dataSource" matSort>
         <!-- Date Column -->
@@ -49,8 +46,6 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Delay Time</th>
           <td mat-cell *matCellDef="let element">{{ element.DelayTime }}</td>
         </ng-container>
-  
-
   
         <!-- Header and Row Definitions -->
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
