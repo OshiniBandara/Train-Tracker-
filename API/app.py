@@ -11,19 +11,20 @@ from firebase_admin import credentials, auth, db
 from email.message import EmailMessage
 from dotenv import load_dotenv
 
+# Load environment variables from .env file
+load_dotenv()
+
 # Initialize Firebase Admin SDK
 cred_path = os.path.join(os.path.dirname(__file__), "FirebaseKeys/serviceAccountKey.json")
 cred = credentials.Certificate(cred_path)
 firebase_admin.initialize_app(cred, {
-    'databaseURL': 'https://train-tracker-app-default-rtdb.firebaseio.com/'
+    'databaseURL': os.getenv("DATABASE_URL")
 })
 
 # Initialize Flask App
 app = Flask(__name__)
 CORS(app)
 
-# Load environment variables from .env file
-load_dotenv()
 
 # API Methods Starts here
 # Signup API Endpoint
@@ -307,8 +308,7 @@ def send_emails_in_background(subject, body, emails):
             email_alert(subject, body, email)
     threading.Thread(target=email_task).start()
         
-
-# Function to Calculate Delay
+# Calculate Delay
 def calculate_delay(scheduled_time, delay_time):
     try:
         # Convert time to datetime objects
@@ -323,9 +323,7 @@ def calculate_delay(scheduled_time, delay_time):
         return f"{delay_hours:.1f}h"
     except Exception as e:
         return "Unknown delay time"
-
 # Helper Methods Ends here
-
 
 # Run Flask App
 if __name__ == "__main__":
