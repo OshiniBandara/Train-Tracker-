@@ -53,3 +53,5 @@ env/
 # Firebase or API Keys (Sensitive Data)
 API/Credentials/serviceAccountKey.json
 API/FirebaseKeys/serviceAccountKey.json
+
+.env

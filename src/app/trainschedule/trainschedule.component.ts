@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatDialog} from '@angular/material/dialog';
-import { AddTrainRecordComponent } from '../TrainRecords/addrecord/addrecord.component';
 import { CommonModule } from '@angular/common'; 
 import { ApiService } from '../services/api.service';
 import { MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
@@ -9,20 +8,20 @@ import { MatSort, MatSortModule} from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule} from '@angular/material/table';
 import { MatInputModule} from '@angular/material/input';
 import { MatFormFieldModule} from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon'; // Import MatIconModule
+import { MatIconModule } from '@angular/material/icon';
 
 
 
 @Component({
   selector: 'app-trainschedule',
   standalone: true,
-  imports: [    MatDialogModule,
+  imports: [    
+    MatDialogModule,
     CommonModule,
-    AddTrainRecordComponent,
     MatTableModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSortModule, // Add MatSortModule for MatSort directive
+    MatSortModule,
     MatPaginatorModule, 
     MatIconModule,// Add MatPaginatorModule for MatPaginator directive
   ],
@@ -45,8 +44,6 @@ export class TrainscheduleComponent implements OnInit{
     this.getTrainRecords();
   }
 
-
-
   getTrainRecords(){
     this.api.getTrainRecord()
     .subscribe({
@@ -62,9 +59,6 @@ export class TrainscheduleComponent implements OnInit{
       }
     })
   }
-
-
-
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

@@ -52,8 +52,8 @@ export class HomeComponent implements OnInit{
 
   openDialog() {
     const dialogRef = this.dialog.open(AddTrainRecordComponent,{
-      width: '800px', // Set the width of the dialog
-      height: '700px', // Set height
+      width: '450px', // Set the width of the dialog
+      height: 'auto', // Set height
       
     })
     
@@ -63,6 +63,37 @@ export class HomeComponent implements OnInit{
     });
   }
 
+  // Edit a train record
+  editRecord(row : any){
+    const dialogRef = this.dialog.open(EditTrainRecordComponent, {
+      width: '450px', 
+      height: 'auto',
+      data: row
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      
+      if (result) {
+        console.log('Record updated, refreshing data...');
+        this.getTrainRecords(); 
+      }
+    });
+  }
+
+  // Delete Dialog box
+  openDeleteDialog(recordId: string): void {
+    const dialogRef = this.dialog.open(DeleteTrainRecordComponent, {
+      data: { recordId }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.deleteRecord(recordId);
+      }
+    });
+  }
+
+  // Get Train Records
   getTrainRecords() {
     this.api.getTrainRecord()
       .subscribe({
@@ -80,7 +111,7 @@ export class HomeComponent implements OnInit{
             }
           } else {
             console.log("No data found in response.");
-            this.dataSource = new MatTableDataSource<any>([]);  // Handle empty response gracefully
+            this.dataSource = new MatTableDataSource<any>([]);
           }
   
           // Apply pagination and sorting
@@ -95,29 +126,11 @@ export class HomeComponent implements OnInit{
           } else {
             alert("Error while fetching the records!");
           }
-          this.dataSource = new MatTableDataSource<any>([]);  // Handle error by setting empty data source
+          this.dataSource = new MatTableDataSource<any>([]);
         }
       });
   }
   
-
-  // Edit a train record
-  editRecord(row : any){
-    const dialogRef = this.dialog.open(EditTrainRecordComponent, {
-      width: '800px', 
-      height: '600px',
-      data: row
-    });
-  
-    dialogRef.afterClosed().subscribe(result => {
-      
-      if (result) {
-        console.log('Record updated, refreshing data...');
-        this.getTrainRecords(); 
-      }
-    });
-  }
-
 
   // Delete a train record
   deleteRecord(id : string ){
@@ -145,18 +158,5 @@ export class HomeComponent implements OnInit{
       this.dataSource.paginator.firstPage();
       //this.getTrainRecords();
     }
-  }
-
-  // Delete Dialog box
-  openDeleteDialog(recordId: string): void {
-    const dialogRef = this.dialog.open(DeleteTrainRecordComponent, {
-      data: { recordId }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.deleteRecord(recordId);
-      }
-    });
   }
 }

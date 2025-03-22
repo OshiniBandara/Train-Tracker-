@@ -2,8 +2,6 @@
 .button-spacer {
     width: 16px;
   }
-  
-
 
   /* Text buttons (Home, Delay Report, etc.) */
   .text-button {
@@ -30,42 +28,43 @@
   }
   
   .filter-container {
-    display: flex; /* Use Flexbox to align items in a row */
-    align-items: center; /* Vertically center the items */
-    gap: 12px; /* Small space between input and button */
-    width: 100%; /* Full width */
+    display: flex;
+    align-items: center; 
+    gap: 12px;
+    width: 100%;
   }
   
   .filter-input {
-    flex: 1; /* Allow the filter input to take up remaining space */
+    flex: 1;
   }
   
   .filter-input .mat-form-field-wrapper {
-    padding-bottom: 0; /* Remove extra padding */
+    padding-bottom: 0;
   }
   
   .filter-input .mat-form-field-flex {
-    align-items: center; /* Vertically center the input */
-    height: 40px; /* Explicitly set the height of the form field */
-    padding: 0 8px; /* Adjust padding to match button height */
+    align-items: center; 
+    height: 40px;
+    padding: 0 8px;
   }
   
   .add-record-button {
-    background-color: #007bff; /* Bootstrap blue */
-    color: white; /* White text */
-    border: none; /* Remove border */
-    padding: 0 20px; /* Horizontal padding */
-    height: 40px; /* Match the height of the filter input */
-    font-weight: bold; /* Bold text */
-    border-radius: 4px; /* Rounded corners */
-    cursor: pointer; /* Pointer cursor on hover */
-    transition: background 0.3s ease-in-out; /* Smooth transition */
-    display: flex; /* Use Flexbox for button content alignment */
-    align-items: center; /* Vertically center the button content */
-    justify-content: center; /* Horizontally center the button content */
-    flex-shrink: 0; /* Prevent the button from shrinking */
+    background-color: #007bff; 
+    color: white; 
+    border: none; 
+    padding: 0 20px; 
+    height: 40px;
+    font-weight: bold; 
+    border-radius: 4px;
+    cursor: pointer; 
+    transition: background 0.3s ease-in-out; 
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    flex-shrink: 0; 
+    margin-bottom: 10px;
   }
   
   .add-record-button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #0056b3;
   }

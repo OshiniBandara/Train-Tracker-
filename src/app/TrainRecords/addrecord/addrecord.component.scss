@@ -1,37 +1,44 @@
 /* Center the dialog title */
 
-h3{
+h3 {
   text-align: center;
+  font-size: 22px;
+  margin-bottom: 16px;
 }
 
 ::ng-deep .mat-dialog-title {
   text-align: center;
-  font-size: 24px; /* Adjust the font size as needed */
-  font-weight: 500; /* Adjust the font weight as needed */
-  margin: 24px; /* Remove default margin */
-  padding: 8px 0; /* Add padding for spacing */
-  width: 100%; /* Ensure the title takes full width */
+  font-size: 22px;
+  font-weight: 500;
+  margin: 16px;
+  padding: 8px 0;
+  width: 80%;
 }
 
-// /* Add padding to the dialog container */
+/* Adjust dialog container size */
 ::ng-deep .mat-dialog-container {
-  padding: 20px; /* Adjust the value as needed */
+  width: 400px; 
+  max-width: 90vw;
+  height: auto;
+  max-height: 90vh;
+  padding: 20px; 
 }
 
-/* Full-width form fields */
+/* Form field styling */
 .full-width {
   width: 100%;
-  margin-bottom: 8px;
+  margin-bottom: 12px; 
 }
 
 /* Space between dialog actions */
 mat-dialog-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
-  padding: 16px 24px; /* Add padding to the actions */
+  gap: 6px;
+  padding: 12px 16px;
 }
 
+/* Adjust Datepicker content */
 .mat-datepicker-content {
   background-color: white;
   border-radius: 4px;

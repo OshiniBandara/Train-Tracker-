@@ -4,10 +4,12 @@ import datetime
 import bcrypt
 import os
 import smtplib
+import threading
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from firebase_admin import credentials, auth, db
 from email.message import EmailMessage
+from dotenv import load_dotenv
 
 # Initialize Firebase Admin SDK
 cred_path = os.path.join(os.path.dirname(__file__), "FirebaseKeys/serviceAccountKey.json")
@@ -20,6 +22,8 @@ firebase_admin.initialize_app(cred, {
 app = Flask(__name__)
 CORS(app)
 
+# Load environment variables from .env file
+load_dotenv()
 
 # API Methods Starts here
 # Signup API Endpoint
@@ -140,13 +144,13 @@ def add_train_record():
         train_ref.set(train_record)
         
         # Calculate delay message
-        delay_message = calculate_delay(data.get("ScheduledTime"), data.get("DelayTime"))
+        delay_time = calculate_delay(data.get("ScheduledTime"), data.get("DelayTime"))
             
         # Email subject and body
         subject = "Train Delay Alert"
         body = f"""
         Train {data.get('TrainName')} from {data.get('FromDestination')} to {data.get('ToDestination')} 
-        will be delayed by {delay_message}.
+        will be delayed by {delay_time}.
         
         Scheduled Time: {data.get('ScheduledTime')}
         New Departure Time: {data.get('DelayTime')}
@@ -156,9 +160,9 @@ def add_train_record():
         # Fetch all users' emails and send email alerts
         users = db.reference("Users").get()
         if users:
-            emails = [user.get("Username") for user in users.values() if "Username" in user]
-            for email in emails:
-                email_alert(subject, body, email)
+            #emails = [user.get("Username") for user in users.values() if "Username" in user]
+            emails = [user.get("Username") for user in users.values() if user.get("UserType") == "StandardUser" and "Username" in user]
+            send_emails_in_background(subject, body, emails)
 
         return jsonify({"message": "Train record added successfully", "TrainId": train_id}), 201
 
@@ -171,7 +175,7 @@ def add_train_record():
 def update_train_record(train_id):
     try:
         data = request.json
-
+        
         updated_record = {
             "Date": data.get("Date"),
             "TrainName": data.get("TrainName"),
@@ -186,15 +190,15 @@ def update_train_record(train_id):
         db.reference("TrainRecords").child(train_id).update(updated_record)
         
         # Calculate delay message
-        delay_message = calculate_delay(data.get("ScheduledTime"), data.get("DelayTime"))
+        delay_time = calculate_delay(data.get("ScheduledTime"), data.get("DelayTime"))
 
-        # Email subject (Dynamic train name)
+        # Email subject
         subject = f"Train Delay Update: {data.get('TrainName')}"
 
-        # Email body (Clear update message)
+        # Email body
         body = f"""
         Train {data.get('TrainName')} from {data.get('FromDestination')} to {data.get('ToDestination')}  
-        now has an updated delay of {delay_message}.
+        now has an updated delay of {delay_time}.
 
         Scheduled Time: {data.get('ScheduledTime')}
         New Departure Time: {data.get('DelayTime')}
@@ -202,12 +206,12 @@ def update_train_record(train_id):
         Thank you for using Train Tracker.
         """
 
-        # Fetch all users' emails (stored under "Username" key)
+        # Fetch all users to send email alerts
         users = db.reference("Users").get()
         if users:
-            emails = [user.get("Username") for user in users.values() if "Username" in user]
-            for email in emails:
-                email_alert(subject, body, email)
+            #emails = [user.get("Username") for user in users.values() if "Username" in user]
+            emails = [user.get("Username") for user in users.values() if user.get("UserType") == "StandardUser" and "Username" in user]
+            send_emails_in_background(subject, body, emails)
 
         return jsonify({"message": "Train record updated successfully, emails sent"}), 200
 
@@ -283,9 +287,9 @@ def email_alert(subject, body, to):
     msg.set_content(body)
     msg['subject'] = subject
     msg['to'] = to
-    
-    user = "traintrackerappsl@gmail.com"
-    password = "obereexezpqxwebn"  
+     
+    user = os.getenv("EMAIL_USER")
+    password = os.getenv("EMAIL_PASS")
 
     try:
         server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
@@ -295,6 +299,13 @@ def email_alert(subject, body, to):
         print(f"Email sent to {to}")
     except Exception as e:
         print(f"Failed to send email: {e}")
+        
+# Send emails in a background thread
+def send_emails_in_background(subject, body, emails):
+    def email_task():
+        for email in emails:
+            email_alert(subject, body, email)
+    threading.Thread(target=email_task).start()
         
 
 # Function to Calculate Delay
